@@ -21,7 +21,7 @@ readRDS("~/results/g2F.rds")
 load("~/results/crab_cod_clean.Rdata")
 
 # ----VISUALIZE MODEL: FIG 3 CONDITIONALS----
-sn_pos <- crab_cod %>% filter(sn_bcd_yn == 1)
+sn_pos <- crab_cod_clean %>% filter(sn_bcd_yn == 1)
 var_list = c(
   year_fact = 2010,
   jday = mean(sn_pos$jday),
@@ -52,14 +52,14 @@ year_fact_2 <- ggplot(year_fact_pred95_2, aes(year, predicted)) +
   geom_point(col = "mediumpurple3") + 
   theme_classic() + 
   labs(x = "year", y = "P(BCD +)") + 
-  geom_point(data = crab_cod, aes(year, sn_bcd_yn), pch = "|", col = "gray78") + 
+  geom_point(data = crab_cod_clean, aes(year, sn_bcd_yn), pch = "|", col = "gray78") + 
   theme(text = element_text(size = 12))
 
 # DAY
 jday_pred95_2 <- ggpredict(g2F, terms = "jday", condition = var_list)
 jday_pred50_2 <- ggpredict(g2F, terms = "jday", condition = var_list, ci.lvl = 0.5)
 jday_2 <- ggplot(jday_pred95_2, aes(x, predicted)) + 
-  geom_point(data = crab_cod, aes(jday, sn_bcd_yn), pch = "|", col = "gray78") + 
+  geom_point(data = crab_cod_clean, aes(jday, sn_bcd_yn), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
               fill = col.alpha("mediumpurple3", 0.2)) + 
   geom_ribbon(data = jday_pred50_2, aes(ymin = conf.low, ymax = conf.high), 
@@ -82,14 +82,14 @@ var_list <- list(
   sn_avg_shell = mean(sn_pos$sn_avg_shell)
 )
 # this is getting the space filter to show visreg at stations
-pts1 <- st_as_sf(x = crab_cod, coords = c('X', 'Y'), crs = '+init=EPSG:32602')
+pts1 <- st_as_sf(x = crab_cod_clean, coords = c('X', 'Y'), crs = '+init=EPSG:32602')
 my_hull <- st_convex_hull(st_union(pts1))
 # get map of AK
 world <- ne_countries(scale = "medium", returnclass = "sf")
-lon_1<-min(crab_cod$long,na.rm=T)-0.5
-lon_2<-max(crab_cod$long,na.rm=T)+0.5
-lat_1<-min(crab_cod$lat,na.rm=T)-0.5
-lat_2<-max(crab_cod$lat,na.rm=T)+0.5
+lon_1<-min(crab_cod_clean$long,na.rm=T)-0.5
+lon_2<-max(crab_cod_clean$long,na.rm=T)+0.5
+lat_1<-min(crab_cod_clean$lat,na.rm=T)-0.5
+lat_2<-max(crab_cod_clean$lat,na.rm=T)+0.5
 xy_p1 <- visreg2d(g2F, "X", "Y", cond = var_list, scale = "response")
 xy_zl1 <- unlist(as.list(as.matrix(xy_p1[["z"]])))
 xy_d1 <- expand.grid(x_val = xy_p1$x, y_val = xy_p1$y)
@@ -120,7 +120,7 @@ XY1 <- ggplot(NULL) +
 
 
 # ----VISUALIZE MODEL: FIG 4 CONDITIONALS----
-sn_pos <- crab_cod %>% filter(sn_bcd_yn == 1)
+sn_pos <- crab_cod_clean %>% filter(sn_bcd_yn == 1)
 var_list = c(
   year_fact = 2010,
   jday = mean(sn_pos$jday),
@@ -145,7 +145,7 @@ pop_2 <- ggplot(pop_pred95_2, aes(x, predicted)) +
   geom_line(col = "mediumpurple3") + 
   theme_classic() + 
   labs(x = "log(snow crab CPUE)", y = "P(BCD +)") + 
-  geom_point(data = crab_cod, aes(sn_pop, sn_bcd_yn), 
+  geom_point(data = crab_cod_clean, aes(sn_pop, sn_bcd_yn), 
              pch = "|", col = "gray78") + 
   theme(text = element_text(size = 12))
 
@@ -161,7 +161,7 @@ sn_avg_shell_2 <- ggplot(sn_avg_shell_pred95_2, aes(x, predicted)) +
   geom_line(col = "mediumpurple3") +
   theme_classic() + 
   labs(x = "avg snow crab shell condition", y = "P(BCD +)") + 
-  geom_point(data = crab_cod, aes(sn_avg_shell, sn_bcd_yn), pch = "|", col = "gray78") + 
+  geom_point(data = crab_cod_clean, aes(sn_avg_shell, sn_bcd_yn), pch = "|", col = "gray78") + 
   theme(text = element_text(size = 12))
 
 # WIDTH
@@ -176,7 +176,7 @@ sn_avg_width_2 <- ggplot(sn_avg_width_pred95_2, aes(x, predicted)) +
   geom_line(col = "mediumpurple3") + 
   theme_classic() + 
   labs(x = "avg snow crab width", y = "P(BCD +)") + 
-  geom_point(data = crab_cod, aes(sn_avg_width, sn_bcd_yn), pch = "|", col = "gray78") + 
+  geom_point(data = crab_cod_clean, aes(sn_avg_width, sn_bcd_yn), pch = "|", col = "gray78") + 
   theme(text = element_text(size = 12))
 
 # DEPTH
@@ -190,7 +190,7 @@ deep_2 <- ggplot(deep_pred95_2, aes(x, predicted)) +
   geom_line(col = "mediumpurple3") + 
   theme_classic() + 
   labs(x = "bottom depth", y = "P(BCD +)") + 
-  geom_point(data = crab_cod, aes(deep, sn_bcd_yn), pch = "|", col = "gray78") + 
+  geom_point(data = crab_cod_clean, aes(deep, sn_bcd_yn), pch = "|", col = "gray78") + 
   theme(text = element_text(size = 12))
 
 # TEMP
@@ -204,7 +204,7 @@ bot_temp_2 <- ggplot(bot_temp_pred95_2, aes(x, predicted)) +
   geom_line(col = "mediumpurple3") + 
   theme_classic() + 
   labs(x = "bottom temperature", y = "P(BCD +)") + 
-  geom_point(data = crab_cod, aes(bot_temp, sn_bcd_yn), pch = "|", col = "gray78") + 
+  geom_point(data = crab_cod_clean, aes(bot_temp, sn_bcd_yn), pch = "|", col = "gray78") + 
   theme(text = element_text(size = 12))
 
 # ----SAVE FIGURES----
