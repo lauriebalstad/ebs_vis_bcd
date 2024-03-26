@@ -1,0 +1,8 @@
+"","variable....c..date....X.Y....temperature....depth....pop_density...","eff_deg_free....as.data.frame.g2F_summary.edf...g2F_summary.edf.","chi_sq....as.data.frame.g2F_summary.chi.sq...g2F_summary.chi.sq.","p_value....as.data.frame.g2F_summary.s.pv...g2F_summary.s.pv."
+"1","date",1.88762325054442,4.696871030857,0.050082016741988
+"2","X,Y",7.52664783997859,67110.3186079651,0.0148943923015969
+"3","temperature",3.00282523001031,43.219269752533,0
+"4","depth",0.000132933469489021,7.22671920697339e-05,0.520507443575939
+"5","pop_density",4.54040336180205,168.416508143911,0
+"6","avg_width",2.37415152193388,15.3509454217482,0.00020088421717146
+"7","avg_shell",0.952429261642605,19.2992924890024,5.05427883124021e-06

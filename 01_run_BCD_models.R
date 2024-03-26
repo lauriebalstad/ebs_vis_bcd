@@ -13,7 +13,7 @@ library(DHARMa)
 library(sdmTMB)
 
 # ----LOAD DATA----
-load("~/results/crab_cod.Rdata")
+load("results/crab_cod.Rdata")
 crab_cod <- crab_cod %>% filter(complete.cases(bot_temp, sn_avg_width))
 
 # ----BASIC DATA CHECKS & PREP----
@@ -38,12 +38,12 @@ suppressWarnings(suppressMessages({
 
 crab_cod_clean <- crab_cod # just complete cases, etc. 
 
-save(crab_cod_clean, file = "~/results/crab_cod_clean.Rdata")
+save(crab_cod_clean, file = "results/crab_cod_clean.Rdata")
 
 # check for covariance
 figA1 <- ggcorr(crab_cod[, c(1, 3:4, 6:16)], nbreaks = 5, label = T, 
        label_round = 2, hjust = 0.75)
-png("~/plots/figA1_survey_correlations.jpg",height=180,width=180,res=400,units='mm')
+png("plots/figA1_survey_correlations.png",height=180,width=180,res=400,units='mm')
 print(figA1)
 dev.off()
 
@@ -93,7 +93,7 @@ a$dev_explained <- c(summary(g0)$dev.expl,
                      summary(g3)$dev.expl, 
                      summary(g4)$dev.expl)
 a_ordered <- arrange(a, AIC) 
-write.csv(a_ordered, "~/results/table2_AIC_values.csv")
+write.csv(a_ordered, "tables/table2_AIC_values.csv")
 
 # refit best model with REML
 g2F <- gam(sn_bcd_yn ~ year_fact + 
@@ -111,25 +111,25 @@ g2F_smooths <- data.frame(variable <- c("date", "X,Y", "temperature", "depth", "
                           eff_deg_free <- as.data.frame(g2F_summary$edf)$`g2F_summary$edf`, 
                           chi_sq <- as.data.frame(g2F_summary$chi.sq)$`g2F_summary$chi.sq`, 
                           p_value <- as.data.frame(g2F_summary$s.pv)$`g2F_summary$s.pv`)
-write.csv(g2F_parametrics, "~/results/table3_parametric.csv")
-write.csv(g2F_smooths, "~/results/table3_smooths.csv")
+write.csv(g2F_parametrics, "tables/table3_parametric.csv")
+write.csv(g2F_smooths, "tables/table3_smooths.csv")
 
 # ----MODEL CHECKS----
 # general checks --> think this prints in the console?
 gam.check(g2F)
 # residual chekcs
-png("~/results/dispersion_model_check.jpg",height=170,width=340,res=400,units='mm')
+png("plots/figX_dispersion_model_check.png",height=170,width=340,res=400,units='mm')
 print(testDispersion(g2F) )
 dev.off()
 so2 <- simulateResiduals(g2F, plot = F) # diddo
-png("~/results/overview_model_check.jpg",height=170,width=340,res=400,units='mm')
+png("plots/figX_overview_model_check.png",height=170,width=340,res=400,units='mm')
 print(plot(so2))
 dev.off()
 # check individual parameters
-png("~/results/parameter_sample_model_check.jpg",height=170,width=170,res=400,units='mm')
+png("plots/figX_parameter_sample_model_check.png",height=170,width=170,res=400,units='mm')
 print(plotResiduals(so2, crab_cod$jday)) # etc
 dev.off()
 
-saveRDS(g2F, "~/results/g2F.rds")
+saveRDS(g2F, "results/g2F.rds")
 
 

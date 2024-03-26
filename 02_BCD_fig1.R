@@ -15,8 +15,8 @@ library(ggeffects)
 library(DHARMa)
 library(rethinking) # this is just for colors!
 # can use rethinking slim: devtools::install_github("rmcelreath/rethinking@slim")
-readRDS("~/results/g2F.rds")
-load("~/results/crab_cod_clean.Rdata")
+readRDS("results/g2F.rds")
+load("results/crab_cod_clean.Rdata")
 
 # ----VISUALIZE DATA----
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -37,13 +37,13 @@ p_st <- crab_cod_clean %>%
 
 sn_prev <- ggplot(p_sn, aes(year, prev)) + 
   geom_line() + 
-  labs(x = "year", y = "crab prevalence (%)") + 
+  labs(x = "Year", y = "Crab prevalence (%)") + 
   theme_classic() + 
   theme(text = element_text(size = 12))
 
 st_prev <- ggplot(p_st, aes(year, prev)) + 
   geom_line() + 
-  labs(x = "year", y = "station prevalence (%)") + 
+  labs(x = "Year", y = "Station prevalence (%)") + 
   theme_classic() + 
   theme(text = element_text(size = 12))
 
@@ -76,6 +76,6 @@ time_series <- plot_grid(sn_prev, st_prev, nrow = 1, labels = "AUTO")
 overview_plot <- plot_grid(time_series, st_dots, nrow = 2, rel_heights = c(0.5, 1), labels = c("", "C"))
 
 # save figure
-png("~/plots/fig1_overview_plot.jpg",height=190,width=170,res=400,units='mm')
-print(overview_plot)
+png("plots/fig1_overview_plot.png",height=85,width=170,res=400,units='mm')
+print(time_series)
 dev.off()

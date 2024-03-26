@@ -10,20 +10,20 @@ library(lubridate)
 
 # ----LOAD DATA----
 # note BCD counts started in 1989
-survDAT_sn <- readRDS("~/data/snow_survey.rds")
+survDAT_sn <- readRDS("data/snow_survey.rds")
 snow_bcd <- survDAT_sn %>% filter(AKFIN_SURVEY_YEAR > 1988) %>% 
   arrange(AKFIN_SURVEY_YEAR, GIS_STATION) 
 snow_bcd <- survDAT_sn %>% filter(AKFIN_SURVEY_YEAR > 1988) %>% 
   arrange(AKFIN_SURVEY_YEAR, GIS_STATION) 
-# survDAT_tan <- read.csv("~/data/EBSCrab_Haul_tanner.csv",header=T,skip=5)
-survDAT_tan <- readRDS("~/data/tan_survey.rds")
+# survDAT_tan <- read.csv("data/EBSCrab_Haul_tanner.csv",header=T,skip=5)
+survDAT_tan <- readRDS("data/tan_survey.rds")
 tanner_bcd <- survDAT_tan %>% filter(AKFIN_SURVEY_YEAR > 1988) %>% 
   arrange(AKFIN_SURVEY_YEAR, GIS_STATION)
-# survDAT_cod <- read.csv("~/data/race_cpue_by_haul.csv", skip = 7, header =T, check.names = F)
-survDAT_cod <- readRDS("~/data/cod_survey.rds")
+# survDAT_cod <- read.csv("data/race_cpue_by_haul.csv", skip = 7, header =T, check.names = F)
+survDAT_cod <- readRDS("data/cod_survey.rds")
 survDAT_cod <- survDAT_cod %>% filter(Year > 1988) %>% arrange(Year)
-# allStation_cod <- read.csv("~/data/Haul Descriptions.csv", header = T, check.names = F)
-allStation_cod <- rreadRDS("~/data/cod_hauls.rds")
+# allStation_cod <- read.csv("data/Haul Descriptions.csv", header = T, check.names = F)
+allStation_cod <- readRDS("data/cod_haul.rds")
 
 # ----SUMMARY DATA FOR WRANGLING----
 # will help later
@@ -162,7 +162,7 @@ ebs_dat <- merge(ebs_dat_sn_temp, tanner01, by=c("year","station"))
 crab_cod <- merge(ebs_dat, cod01, by = c("year", "station"))
 
 # ----SAVE----
-save(crab_cod, file = "~/results/crab_cod.RData")
+save(crab_cod, file = "results/crab_cod.RData")
 
 
 
