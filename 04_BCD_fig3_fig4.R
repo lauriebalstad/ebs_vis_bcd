@@ -18,7 +18,7 @@ library(rethinking) # this is just for colors!
 # can use rethinking slim: devtools::install_github("rmcelreath/rethinking@slim")
 library(sf)
 library(oce)
-readRDS("results/g2F.rds")
+g2F <- readRDS("results/g2F.rds")
 load("results/crab_cod_clean.Rdata")
 
 # ----VISUALIZE MODEL: FIG 3 CONDITIONALS----

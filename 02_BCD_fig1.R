@@ -76,6 +76,6 @@ time_series <- plot_grid(sn_prev, st_prev, nrow = 1, labels = "AUTO")
 overview_plot <- plot_grid(time_series, st_dots, nrow = 2, rel_heights = c(0.5, 1), labels = c("", "C"))
 
 # save figure
-png("plots/fig1_overview_plot.png",height=90,width=170,res=400,units='mm')
+png("plots/fig1_overview_plot.png",height=85,width=170,res=400,units='mm')
 print(time_series)
 dev.off()
