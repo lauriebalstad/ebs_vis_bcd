@@ -13,10 +13,11 @@ library(ggplot2)
 library(cowplot)
 library(ggeffects)
 library(DHARMa)
+library(viridis)
 library(rethinking) # this is just for colors!
 # can use rethinking slim: devtools::install_github("rmcelreath/rethinking@slim")
-readRDS("~/results/g2F.rds")
-load("~/results/crab_cod_clean.Rdata")
+readRDS("results/g2F.rds")
+load("results/crab_cod_clean.Rdata")
 
 # ----VISUALIZE MODEL: PREDICTIONS----
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -44,13 +45,13 @@ real_dat <- ggplot() +
            expand = FALSE) + 
   facet_wrap(~year, nrow = 3) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 0.5, size = 12), 
-        strip.text.x = element_text(margin= margin(1,0,1,0), size = 14), 
+        strip.text.x = element_text(margin= margin(1,0,1,0), size = 12), 
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(), 
         panel.border = element_blank(), 
         strip.background = element_rect(color="white",fill="white"), 
         legend.position = "bottom", text=element_text(size = 12)) + 
-  labs(col = "BCD +", x = "longitutde", y = "latitude") + 
+  labs(col = "Station BCD +", x = "Longitude", y = "Latitude") + 
   geom_point(data = crab_cod_clean %>% 
                filter(year %in% c(1994, 2007, 2016)) %>% 
                filter(sn_bcd_yn == 1), 
@@ -64,11 +65,11 @@ pred_2_dat <- ggplot() +
                filter(year %in% c(1994, 2007, 2016)), 
              aes(x = long, y = lat, col = inv_logit(pred_2))) + 
   theme_classic() + 
-  scale_color_distiller(palette="Purples", 
-                        direction = 1, 
-                        na.value="grey", 
-                        lim = c(0, 1)) + 
-  labs(col = "P(BCD +)", x = "longitutde", y = "latitude") + 
+  scale_color_distiller(palette="Blues",
+                       direction = 1, na.value="grey", lim = c(0, 1), breaks = c(0, 0.5, 1),
+  # scale_color_viridis(direction = -1, begin = 0, end = 0.8,
+                     name = "Probability \nBCD +") + 
+  labs(col = "P(Station BCD +)", x = "Longitude", y = "Latitude") + 
   geom_sf(data=world) + 
   coord_sf(xlim = c(lon_1-1,lon_2+1), 
            ylim = c(lat_1-1,lat_2+1), 
@@ -95,13 +96,13 @@ leg_plot <- plot_grid(legend_RD, legend_2,
                       ncol = 2)
 
 data_model <- plot_grid(
-  real_dat + theme(legend.position="none"), 
-  pred_2_dat+ theme(legend.position="none"),
+  real_dat, # + theme(legend.position="none"), 
+  pred_2_dat, # + theme(legend.position="none"),
   ncol = 2)
 dat_mod_leg <- plot_grid(data_model, leg_plot, 
                          nrow = 2, rel_heights = c(1, 0.1))
 
 # save plot to folder
-png("~/plots/fig2_data_model.jpg",height=220,width=170,res=400,units='mm')
-print(dat_mod_leg)
+png("plots/fig2_data_model.png",height=220,width=170,res=400,units='mm')
+print(data_model)
 dev.off()

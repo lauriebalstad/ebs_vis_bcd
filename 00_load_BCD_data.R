@@ -2,6 +2,7 @@
 #' author: LJB
 #' date: 11/15/2023
 #' start product: EBS survey CSVs in data folder
+#' note: watch working directory location
 #' end product: crab_cod.Rdata in results folder
 
 # ----LOAD LIBS----
@@ -10,20 +11,21 @@ library(lubridate)
 
 # ----LOAD DATA----
 # note BCD counts started in 1989
-survDAT_sn <- readRDS("data/snow_survey.rds")
+# set wd to folder with github files/data
+survDAT_sn <- readRDS("~/GitHub/ebs_vis_bcd/data/snow_survey.rds")
 snow_bcd <- survDAT_sn %>% filter(AKFIN_SURVEY_YEAR > 1988) %>% 
   arrange(AKFIN_SURVEY_YEAR, GIS_STATION) 
 snow_bcd <- survDAT_sn %>% filter(AKFIN_SURVEY_YEAR > 1988) %>% 
   arrange(AKFIN_SURVEY_YEAR, GIS_STATION) 
 # survDAT_tan <- read.csv("data/EBSCrab_Haul_tanner.csv",header=T,skip=5)
-survDAT_tan <- readRDS("data/tan_survey.rds")
+survDAT_tan <- readRDS("~/GitHub/ebs_vis_bcd/data/tan_survey.rds")
 tanner_bcd <- survDAT_tan %>% filter(AKFIN_SURVEY_YEAR > 1988) %>% 
   arrange(AKFIN_SURVEY_YEAR, GIS_STATION)
 # survDAT_cod <- read.csv("data/race_cpue_by_haul.csv", skip = 7, header =T, check.names = F)
-survDAT_cod <- readRDS("data/cod_survey.rds")
+survDAT_cod <- readRDS("~/GitHub/ebs_vis_bcd/data/cod_survey.rds")
 survDAT_cod <- survDAT_cod %>% filter(Year > 1988) %>% arrange(Year)
-# allStation_cod <- read.csv("data/Haul Descriptions.csv", header = T, check.names = F)
-allStation_cod <- readRDS("data/cod_haul.rds")
+# allStation_cod <- read.csv("~/data/Haul Descriptions.csv", header = T, check.names = F)
+allStation_cod <- readRDS("~/GitHub/ebs_vis_bcd/data/cod_haul.rds")
 
 # ----SUMMARY DATA FOR WRANGLING----
 # will help later
@@ -50,6 +52,7 @@ sn_shell_avg <- matrix(nrow = length(SurvYR_sn), ncol = length(AllStation_sn)) #
 sn_bot_temp <- matrix(nrow = length(SurvYR_sn), ncol = length(AllStation_sn)) # bottom temperature
 sn_deep <- matrix(nrow = length(SurvYR_sn), ncol = length(AllStation_sn)) # bottom depth
 sn_date <- matrix(nrow = length(SurvYR_sn), ncol = length(AllStation_sn)) # collection date
+sn_num <- matrix(nrow = length(SurvYR_sn), ncol = length(AllStation_sn)) # collection date
 
 # loop through snow crab data
 for(y in 1:length(SurvYR_sn))
@@ -114,6 +117,10 @@ for(y in 1:length(SurvYR_sn))
     sn_deep[y, j] <- stationALL$BOTTOM_DEPTH[1] 
     sn_date[y, j] <- yday(mdy(stationALL$START_DATE[1]))
     
+    # get number of sampled crab
+    sn_num[y, j] <- dim(sn_All_SY)[1]
+    
+    
   }
 }
 
@@ -149,7 +156,9 @@ ebs_dat_sn <- data.frame(
   sn_count_bcd = c(t(sn_bcd_count)), # for counts
 
   sn_avg_width = c(t(sn_width_avg)),
-  sn_avg_shell = c(t(sn_shell_avg))
+  sn_avg_shell = c(t(sn_shell_avg)), 
+  
+  sn_sample_num = c(t(sn_num))
   
 ) 
 

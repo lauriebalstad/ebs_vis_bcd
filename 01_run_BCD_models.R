@@ -41,7 +41,7 @@ crab_cod_clean <- crab_cod # just complete cases, etc.
 save(crab_cod_clean, file = "results/crab_cod_clean.Rdata")
 
 # check for covariance
-figA1 <- ggcorr(crab_cod[, c(1, 3:4, 6:16)], nbreaks = 5, label = T, 
+figA1 <- ggcorr(crab_cod_clean[, c(1, 3:4, 6:8, 10:12, 14:17)], nbreaks = 5, label = T, 
        label_round = 2, hjust = 0.75)
 png("plots/figA1_survey_correlations.png",height=180,width=180,res=400,units='mm')
 print(figA1)
@@ -127,7 +127,7 @@ print(plot(so2))
 dev.off()
 # check individual parameters
 png("plots/figX_parameter_sample_model_check.png",height=170,width=170,res=400,units='mm')
-print(plotResiduals(so2, crab_cod$jday)) # etc
+print(plotResiduals(so2, crab_cod_clean$jday)) # etc
 dev.off()
 
 saveRDS(g2F, "results/g2F.rds")
