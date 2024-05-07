@@ -46,6 +46,10 @@ figA1 <- ggcorr(crab_cod_clean[, c(1, 3:4, 6:8, 10:12, 14:17)], nbreaks = 5, lab
 png("plots/figA1_survey_correlations.png",height=180,width=180,res=400,units='mm')
 print(figA1)
 dev.off()
+ggplot2::ggsave(plot = figA1, 
+                filename = "plots/figA1_survey_correlations.eps", 
+                device = "eps", width = 170, height = 170, 
+                units = "mm")
 
 # ----BUILD MODELS----
 # null model 

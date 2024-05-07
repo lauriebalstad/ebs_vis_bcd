@@ -6,6 +6,7 @@ library("rnaturalearth")
 library(ggplot2)
 library(cowplot)
 library(ggeffects)
+library(ggnewscale)
 library(DHARMa)
 library(rethinking) # this is just for colors!
 # can use rethinking slim: devtools::install_github("rmcelreath/rethinking@slim")
@@ -75,14 +76,16 @@ year_fact_pred50_BS$conf <- rep(0.5); year_fact_pred50_BS$model <- rep("ts = 'bs
 year_fact <- rbind(year_fact_pred95_2, year_fact_pred50_2, 
                    year_fact_pred95_NP, year_fact_pred50_NP, 
                    year_fact_pred95_BS, year_fact_pred50_BS)}
-year_A2 <- ggplot(NULL, aes(year, log(predicted/(1-predicted)), col = model)) + 
+year_A2 <- ggplot(year_fact, aes(year, log(predicted/(1-predicted)))) + 
   geom_linerange(data = year_fact %>% filter(conf == 0.95), 
-                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-                 alpha = 0.2, lwd = 1) + 
+                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), col = model), 
+                 lwd = 1) + scale_color_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_color() +
   geom_linerange(data = year_fact %>% filter(conf == 0.5), 
-                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-                 alpha = 0.5, lwd = 1) + 
-  geom_point(data = year_fact %>% filter(conf == 0.5), size = 1, alpha = 1) + 
+                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), col = model), 
+                 lwd = 1) + scale_color_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) + 
+  new_scale_color() +
+  geom_point(data = year_fact %>% filter(conf == 0.5), size = 1, alpha = 1, aes(col = model)) + 
   geom_point(data = crab_cod_clean, aes(year, 7.5*sn_bcd_yn-7.5), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
@@ -104,19 +107,20 @@ jday_pred50_BS$conf <- rep(0.5); jday_pred50_BS$model <- rep("ts = 'bs'")
 jday <- rbind(jday_pred95_2, jday_pred50_2, 
                    jday_pred95_NP, jday_pred50_NP, 
                    jday_pred95_BS, jday_pred50_BS)}
-jday_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)), fill = model)) + 
+jday_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)))) + 
   geom_ribbon(data = jday %>% filter(conf == 0.95), 
-                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-                 alpha = 0.2) + 
+                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_fill() +
   geom_ribbon(data = jday %>% filter(conf == 0.5), 
-                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-                 alpha = 0.5) + 
-  geom_line(data = jday %>% filter(conf == 0.5), aes(col = model), size = 1.2, alpha = 1) + 
+                 aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) + 
+  # new_scale_color() + 
+  geom_line(data = jday %>% filter(conf == 0.5), aes(col = model), size = 1.2) + 
   geom_point(data = crab_cod_clean, aes(jday, 7.5*sn_bcd_yn-7.5, fill = NULL), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
-  labs(x = "Sample date (Julian day)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) + scale_fill_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
-
+  labs(x = "Sample date (Julian day)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
 
 
 
@@ -136,19 +140,19 @@ sn_pop_pred50_BS$conf <- rep(0.5); sn_pop_pred50_BS$model <- rep("ts = 'bs'")
 sn_pop <- rbind(sn_pop_pred95_2, sn_pop_pred50_2, 
               sn_pop_pred95_NP, sn_pop_pred50_NP, 
               sn_pop_pred95_BS, sn_pop_pred50_BS)}
-sn_pop_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)), fill = model)) + 
+sn_pop_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)))) + 
   geom_ribbon(data = sn_pop %>% filter(conf == 0.95), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.2) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_fill() +
   geom_ribbon(data = sn_pop %>% filter(conf == 0.5), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.5) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) + 
   geom_line(data = sn_pop %>% filter(conf == 0.5), aes(col = model), size = 1.2, alpha = 1) + 
   geom_point(data = crab_cod_clean, aes(sn_pop, 8.5*sn_bcd_yn-9, fill = NULL), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
-  labs(x = "Snow crab density (log(CPUE))", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) + scale_fill_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
-
+  labs(x = "Snow crab density (log(CPUE))", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) 
 
 
 
@@ -168,19 +172,19 @@ sn_avg_width_pred50_BS$conf <- rep(0.5); sn_avg_width_pred50_BS$model <- rep("ts
 sn_avg_width <- rbind(sn_avg_width_pred95_2, sn_avg_width_pred50_2, 
                 sn_avg_width_pred95_NP, sn_avg_width_pred50_NP, 
                 sn_avg_width_pred95_BS, sn_avg_width_pred50_BS)}
-sn_avg_width_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)), fill = model)) + 
+sn_avg_width_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)))) + 
   geom_ribbon(data = sn_avg_width %>% filter(conf == 0.95), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.2) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_fill() +
   geom_ribbon(data = sn_avg_width %>% filter(conf == 0.5), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.5) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) +
   geom_line(data = sn_avg_width %>% filter(conf == 0.5), aes(col = model), size = 1.2, alpha = 1) + 
   geom_point(data = crab_cod_clean, aes(sn_avg_width, 7.5*sn_bcd_yn-7.5, fill = NULL), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
-  labs(x = "Mean carapace width (mm)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) + scale_fill_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
-
+  labs(x = "Mean carapace width (mm)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) 
 
 
 
@@ -200,19 +204,19 @@ sn_avg_shell_pred50_BS$conf <- rep(0.5); sn_avg_shell_pred50_BS$model <- rep("ts
 sn_avg_shell <- rbind(sn_avg_shell_pred95_2, sn_avg_shell_pred50_2, 
                       sn_avg_shell_pred95_NP, sn_avg_shell_pred50_NP, 
                       sn_avg_shell_pred95_BS, sn_avg_shell_pred50_BS)}
-sn_avg_shell_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)), fill = model)) + 
+sn_avg_shell_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)))) + 
   geom_ribbon(data = sn_avg_shell %>% filter(conf == 0.95), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.2) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_fill() +
   geom_ribbon(data = sn_avg_shell %>% filter(conf == 0.5), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.5) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) +
   geom_line(data = sn_avg_shell %>% filter(conf == 0.5), aes(col = model), size = 1.2, alpha = 1) + 
   geom_point(data = crab_cod_clean, aes(sn_avg_shell, 7.5*sn_bcd_yn-7.5, fill = NULL), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
-  labs(x = "Mean shell condition", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) + scale_fill_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
-
+  labs(x = "Mean shell condition", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) 
 
 
 #-----TEMP-----
@@ -231,19 +235,19 @@ bot_temp_pred50_BS$conf <- rep(0.5); bot_temp_pred50_BS$model <- rep("ts = 'bs'"
 bot_temp <- rbind(bot_temp_pred95_2, bot_temp_pred50_2, 
                       bot_temp_pred95_NP, bot_temp_pred50_NP, 
                       bot_temp_pred95_BS, bot_temp_pred50_BS)}
-bot_temp_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)), fill = model)) + 
+bot_temp_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)))) + 
   geom_ribbon(data = bot_temp %>% filter(conf == 0.95), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.2) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_fill() +
   geom_ribbon(data = bot_temp %>% filter(conf == 0.5), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.5) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) +
   geom_line(data = bot_temp %>% filter(conf == 0.5), aes(col = model), size = 1.2, alpha = 1) + 
   geom_point(data = crab_cod_clean, aes(bot_temp, 7.5*sn_bcd_yn-7.5, fill = NULL), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
-  labs(x = "Bottom temperature (°C)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) + scale_fill_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
-
+  labs(x = "Bottom temperature (°C)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
 
 
 #-----DEEP-----
@@ -262,19 +266,19 @@ deep_pred50_BS$conf <- rep(0.5); deep_pred50_BS$model <- rep("ts = 'bs'")
 deep <- rbind(deep_pred95_2, deep_pred50_2, 
                   deep_pred95_NP, deep_pred50_NP, 
                   deep_pred95_BS, deep_pred50_BS)}
-deep_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)), fill = model)) + 
+deep_A2 <- ggplot(NULL, aes(x, log(predicted/(1-predicted)))) + 
   geom_ribbon(data = deep %>% filter(conf == 0.95), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.2) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#D4E1EF", "#E0F3DF", "#D9CCDD")) +
+  new_scale_fill() +
   geom_ribbon(data = deep %>% filter(conf == 0.5), 
-              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high))), 
-              alpha = 0.5) + 
+              aes(ymin = log(conf.low/(1-conf.low)), ymax = log(conf.high/(1-conf.high)), fill = model)) + 
+  scale_fill_manual(values = c("#80A5D0", "#A6DE9F", "#8C6699")) + 
   geom_line(data = deep %>% filter(conf == 0.5), aes(col = model), size = 1.2, alpha = 1) + 
   geom_point(data = crab_cod_clean, aes(deep, 7.5*sn_bcd_yn-7.5, fill = NULL), pch = "|", col = "gray78") + 
   facet_wrap(~model) + 
   theme_classic() +   theme(text = element_text(size = 12)) + 
-  labs(x = "Station bottom depth (m)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) + scale_fill_manual(values = c("#1F6AB0", "#5ec962", "#440154"))
-
+  labs(x = "Station bottom depth (m)", y = "log odds \nStation BCD+") + scale_color_manual(values = c("#1F6AB0", "#5ec962", "#440154")) 
 
 
 
@@ -419,6 +423,10 @@ pg_factors_A2 <- plot_grid(
 png("plots/figA2_pg_factors.png",height=250,width=170,res=400,units='mm')
 print(pg_factors_A2)
 dev.off()
+ggplot2::ggsave(plot = pg_factors_A2, 
+                filename = "plots/figA2_pg_factors.eps", 
+                device = "eps", width = 170, height = 250, 
+                units = "mm")
 
 pg_time <- plot_grid(year_A2, jday_A2, ncol = 1, labels = c("A*", "B"))
 pg_space <- plot_grid(XY_2, XY_NP, XY_BS, ncol = 3)
@@ -430,7 +438,10 @@ pg_spacetime_A2 <- plot_grid(
 png("plots/figA2_pg_spacetime.png",height=170,width=170,res=400,units='mm')
 print(pg_spacetime_A2)
 dev.off()
-
+ggplot2::ggsave(plot = pg_spacetime_A2, 
+                filename = "plots/figA2_pg_spacetime.eps", 
+                device = "eps", width = 170, height = 170, 
+                units = "mm")
 
 
 

@@ -46,10 +46,10 @@ year_fact_pred50_2$year <- as.numeric(year_fact_pred50_2$x) + 1988
 year_fact_pred50_2$year[32] <- 2021
 year_fact_2 <- ggplot(year_fact_pred95_2, aes(year, predicted)) + 
   geom_linerange(aes(ymin = conf.low, ymax = conf.high), 
-                 col = col.alpha("#1F6AB0", 0.2), lwd = 2) + 
+                 col = "#D4E1EF", lwd = 2) + 
   geom_linerange(data = year_fact_pred50_2, 
                  aes(ymin = conf.low, ymax = conf.high), 
-                 col = col.alpha("#1F6AB0", 0.5), lwd = 2) + 
+                 col = "#80A5D0", lwd = 2) + 
   geom_point(col = "#1F6AB0", size = 1) + 
   theme_classic() + 
   labs(x = "Year", y = "P(BCD +)") + 
@@ -62,9 +62,9 @@ jday_pred50_2 <- ggpredict(g2F, terms = "jday", condition = var_list, ci.lvl = 0
 jday_2 <- ggplot(jday_pred95_2, aes(x, predicted)) + 
   geom_point(data = crab_cod_clean, aes(jday, sn_bcd_yn*0.15), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.2)) + 
+              fill = "#D4E1EF") + 
   geom_ribbon(data = jday_pred50_2, aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.5)) + 
+              fill = "#80A5D0") + 
   geom_line(col = "#1F6AB0", lwd = 1.2) + 
   theme_classic() + 
   labs(x = "Sample day (Julian day)", y = "P(BCD +)") + 
@@ -158,10 +158,10 @@ pop_pred50_2 <- ggpredict(g2F, terms = "sn_pop", condition = var_list, ci.lvl = 
 pop_2 <- ggplot(pop_pred95_2, aes(x, predicted)) + 
   geom_point(data = crab_cod_clean, aes(sn_pop, sn_bcd_yn*0.4), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.2)) + 
+              fill = "#D4E1EF") + 
   geom_ribbon(data = pop_pred50_2, aes(ymin = conf.low, 
                                        ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.5)) + 
+              fill = "#80A5D0") + 
   geom_line(col = "#1F6AB0", lwd = 1.2) + 
   theme_classic() + 
   labs(x = "log(Snow crab CPUE)", y = "P(BCD +)") + 
@@ -173,10 +173,10 @@ sn_avg_shell_pred50_2 <- ggpredict(g2F, terms = "sn_avg_shell", condition = var_
 sn_avg_shell_2 <- ggplot(sn_avg_shell_pred95_2, aes(x, predicted)) + 
   geom_point(data = crab_cod_clean, aes(sn_avg_shell, sn_bcd_yn*0.45), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.2)) + 
+              fill = "#D4E1EF") + 
   geom_ribbon(data = sn_avg_shell_pred50_2, 
               aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.5)) + 
+              fill = "#80A5D0") + 
   geom_line(col = "#1F6AB0", lwd = 1.2) +
   theme_classic() + 
   labs(x = "Mean snow crab shell condition", y = "P(BCD +)") + 
@@ -188,10 +188,10 @@ sn_avg_width_pred50_2 <- ggpredict(g2F, terms = "sn_avg_width", condition = var_
 sn_avg_width_2 <- ggplot(sn_avg_width_pred95_2, aes(x, predicted)) + 
   geom_point(data = crab_cod_clean, aes(sn_avg_width, sn_bcd_yn*0.15), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.2)) + 
+              fill = "#D4E1EF") + 
   geom_ribbon(data = sn_avg_width_pred50_2, 
               aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.5)) + 
+              fill = "#80A5D0") + 
   geom_line(col = "#1F6AB0", lwd = 1.2) + 
   theme_classic() + 
   labs(x = "Mean snow crab width (mm)", y = "P(BCD +)") + 
@@ -203,9 +203,9 @@ deep_pred50_2 <- ggpredict(g2F, terms = "deep", condition = var_list, ci.lvl = 0
 deep_2 <- ggplot(deep_pred95_2, aes(x, predicted)) + 
   geom_point(data = crab_cod_clean, aes(deep, sn_bcd_yn*0.15), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.2)) + 
+              fill = "#D4E1EF") + 
   geom_ribbon(data = deep_pred50_2, aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.5)) + 
+              fill = "#80A5D0") + 
   geom_line(col = "#1F6AB0", lwd = 1.2) + 
   theme_classic() + 
   labs(x = "Bottom depth (m)", y = "P(BCD +)") + 
@@ -217,9 +217,9 @@ bot_temp_pred50_2 <- ggpredict(g2F, terms = "bot_temp", condition = var_list, ci
 bot_temp_2 <- ggplot(bot_temp_pred95_2, aes(x, predicted)) + 
   geom_point(data = crab_cod_clean, aes(bot_temp, sn_bcd_yn*0.15), pch = "|", col = "gray78") + 
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.2)) + 
+              fill = "#D4E1EF") + 
   geom_ribbon(data = bot_temp_pred50_2, aes(ymin = conf.low, ymax = conf.high), 
-              fill = col.alpha("#1F6AB0", 0.5)) + 
+              fill = "#80A5D0") + 
   geom_line(col = "#1F6AB0", lwd = 1.2) + 
   theme_classic() + 
   labs(x = "Bottom temperature (°C)", y = "P(BCD +)") + 
@@ -240,6 +240,10 @@ pg_factors_2 <- plot_grid(
 png("plots/fig4_pg_factors_2.png",height=200,width=170,res=400,units='mm')
 print(pg_factors_2)
 dev.off()
+ggplot2::ggsave(plot = pg_factors_2, 
+                filename = "plots/fig4_pg_factors_2.eps", 
+                device = "eps", width = 170, height = 200, 
+                units = "mm")
 
 pg_spacetime <- plot_grid(
   year_fact_2,
@@ -250,6 +254,10 @@ pg_spacetime <- plot_grid(
 png("plots/fig3_pg_spacetime.png",height=180,width=90,res=400,units='mm')
 print(pg_spacetime)
 dev.off()
+ggplot2::ggsave(plot = pg_spacetime, 
+                filename = "plots/fig3_pg_spacetime.eps", 
+                device = "eps", width = 85, height = 170, 
+                units = "mm")
 
 # # for A2
 # pg_factors_2 <- plot_grid(

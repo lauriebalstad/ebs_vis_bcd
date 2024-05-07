@@ -106,3 +106,8 @@ dat_mod_leg <- plot_grid(data_model, leg_plot,
 png("plots/fig2_data_model.png",height=220,width=170,res=400,units='mm')
 print(data_model)
 dev.off()
+
+ggplot2::ggsave(plot = data_model, 
+                filename = "plots/fig2_data_model.eps", 
+                device = "eps", width = 170, height = 220, 
+                units = "mm")

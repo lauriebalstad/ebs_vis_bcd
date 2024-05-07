@@ -1,0 +1,26 @@
+{
+    "id": "C99DD0D5",
+    "path": "~/GitHub/ebs_vis_bcd/03_BCD_fig2.R",
+    "project_path": "03_BCD_fig2.R",
+    "type": "r_source",
+    "hash": "293046626",
+    "contents": "",
+    "dirty": false,
+    "created": 1715033499819.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "112,29",
+        "scrollLine": "96"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1715033551,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1715033551277,
+    "read_only": false,
+    "read_only_alternatives": []
+}
